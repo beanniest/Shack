@@ -1,2 +1,1 @@
-# Shack
-Restaurant Margin and Trend Tracker
+Statistical analysis for resturants
