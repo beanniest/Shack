@@ -1,4 +1,6 @@
 
+import pandas as pd
+
 #class for a single menu item
 class MenuItem:
     def __init__(self, excel_name):    #need to load in ingredients dictionary, timing for making, and sell price from excel!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -44,5 +46,12 @@ class Menu:
         
 
 def analyze(file_name):
-    the_menu = Menu(file_name)
+
+    #read each sheet of the excel
+    resturant_info_1 = pd.read_excel(file_name, sheet_name="Menu")
+    resturant_info_2 = pd.read_excel(file_name, sheet_name="Ingredients")
+    resturant_info_3 = pd.read_excel(file_name, sheet_name="Employees")
+    print(resturant_info_1)
+    print(resturant_info_2)
+    print(resturant_info_3)
     
