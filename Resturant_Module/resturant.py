@@ -30,10 +30,39 @@ class Menu:
     #to add all menu items to menu
     def add_items(self, excel_name):
         #add all items from excel to menu
-        self.menu_items.append('A')
-
         resturant_info_1 = pd.read_excel(excel_name, sheet_name="Menu")
-        print(resturant_info_1)
+
+        #define length where ingredients stop
+        ingredients_length = len(resturant_info_1.Items)-4
+        total_rows = len(resturant_info_1.Items)
+
+        #for each menu item excel column
+        for menu_item in range(1,len(resturant_info_1.columns)):
+
+            #get item name
+            item_name= resturant_info_1.columns[menu_item]
+
+            #get items ingredients dict
+            item_ingredients={}
+            ingredients_key_list = resturant_info_1.Items[0:ingredients_length]
+            ingredients_value_list = resturant_info_1.loc[0:ingredients_length-1, resturant_info_1.columns[menu_item]]
+            for i in range(ingredients_length):
+                item_ingredients[ingredients_key_list[i]] = float(ingredients_value_list[i])
+            
+            #get the list of timings
+            item_timing = {}
+            timing_key_list = resturant_info_1.Items[total_rows-4:total_rows-1]
+            timing_value_list = resturant_info_1.loc[total_rows-4:total_rows-2, resturant_info_1.columns[menu_item]]
+            #indxing offset in the loop mecause panda object keep indexing from where they were grabbed in the list
+            for i in [0,1,2]:
+                item_timing[timing_key_list[i+total_rows-4]] = float(timing_value_list[i+total_rows-4])
+            
+            #get the selling price for the item
+            item_sell_price = float(resturant_info_1.loc[total_rows-1, resturant_info_1.columns[menu_item]])
+
+            #add the item to the list
+            self.menu_items.append(MenuItem(item_name, item_ingredients, item_timing, item_sell_price))
+
 
     #to caclulate margins of each menu item
     def calculate_profit(self):
@@ -59,9 +88,15 @@ def analyze(file_name):
 
     #create menu in python
     resturant_menu = Menu(file_name)
+
+    #see the contents of the menu and its items
     print(resturant_menu.ingredient_cost)
     print(resturant_menu.wages)
-    print(resturant_menu.ingredient_cost)
+    for item in resturant_menu.menu_items:
+        print(item.name)
+        print(item.ingredients)
+        print(item.timing)
+        print(item.sell_price)
 
 
     
