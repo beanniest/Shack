@@ -1,5 +1,7 @@
 
 import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
 
 #class for a single menu item
 class MenuItem:
@@ -77,13 +79,18 @@ class Menu:
             for index in range(3):
                 production_cost = production_cost + list(item.timing.values())[index]/60 * list(self.wages.values())[index]
 
-            #print statistics for the menu item
-            print("=====" + item.name + "=====\n")
-            print("Cost: " + str(production_cost) + " $CAD\n")
-            print("sell price: " + str(item.sell_price) + " $CAD\n")
-            print("profit: " + str(item.sell_price-production_cost) + " $CAD\n")
-        
+            #print statistics for the menu item using matplot lib
+            chart_metrics = ["cost", "sell price", "profit"]
+            metric_values = [production_cost, item.sell_price, item.sell_price-production_cost]
 
+            plt.bar(chart_metrics, metric_values, color='skyblue')
+            plt.xlabel('revenue categories')
+            plt.ylabel('Monetary Value $CAD')
+            plt.title(item.name + ' comprehensive cost analysis')
+            plt.show()
+
+            
+        
 def analyze(file_name):
 
     #create menu in python
