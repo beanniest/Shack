@@ -29,6 +29,20 @@ class Menu:
         for i in range(len(resturant_info_2.Ingredient)):
             self.ingredient_cost[resturant_info_2.Ingredient[i]] = float(resturant_info_2.GramCost[i])
 
+        #average daily costs list ()
+        resturant_info_4 = pd.read_excel(excel_name, sheet_name="Sales Stats", skiprows=1, usecols=[1,2,3,4,5,6,7,8])
+
+        #get average of each day
+        self.average_list = []
+        for day in range(len(resturant_info_4.columns)):
+            days_avg_sales = 0
+            for day_of_sales in resturant_info_4.loc[:, resturant_info_4.columns[day]]:
+                days_avg_sales = days_avg_sales + float(day_of_sales)
+            
+            days_avg_sales = days_avg_sales/len(resturant_info_4.loc[:, resturant_info_4.columns[day]])
+            self.average_list.append(days_avg_sales)
+
+
     #to add all menu items to menu
     def add_items(self, excel_name):
         #add all items from excel to menu
@@ -67,7 +81,7 @@ class Menu:
 
 
     #to caclulate margins of each menu item
-    def calculate_profit(self):
+    def calculate_menu_profit(self):
         for item in self.menu_items:
             production_cost = 0
 
@@ -82,12 +96,24 @@ class Menu:
             #print statistics for the menu item using matplot lib
             chart_metrics = ["cost", "sell price", "profit"]
             metric_values = [production_cost, item.sell_price, item.sell_price-production_cost]
+            colors=["red", "blue", "green"]
 
-            plt.bar(chart_metrics, metric_values, color='skyblue')
+            plt.bar(chart_metrics, metric_values, color=colors)
             plt.xlabel('revenue categories')
             plt.ylabel('Monetary Value $CAD')
             plt.title(item.name + ' comprehensive cost analysis')
             plt.show()
+
+    #to display sales trends
+    def calculate_sales_trends(self):
+        chart_metrics = ["Monday", "Tuesday", "Wednseday", "Thursday", "Friday", "Saturday", "Sunday", "Daily Operational Costs"]
+        metric_values = self.average_list
+        colors = ["red", "red", "green", "green", "green", "green", "green", "yellow"]
+        plt.bar(chart_metrics, metric_values, color=colors)
+        plt.xlabel('Days of the week (earned and spent)')
+        plt.ylabel('Monetary Average $CAD')
+        plt.title("average daily profit and expenditure")
+        plt.show()
 
             
         
@@ -109,7 +135,10 @@ def analyze(file_name):
     '''
 
     #calculate profit for each item
-    resturant_menu.calculate_profit()
+    resturant_menu.calculate_menu_profit()
+
+    #calculate weekly sales trends
+    resturant_menu.calculate_sales_trends()
 
 
     
