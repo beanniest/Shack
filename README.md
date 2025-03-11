@@ -7,3 +7,5 @@ This repository contains 3 things
 
 To use it clone the repository and follow the examples in 3. to use it in your own python files. 
 Ensure any new excel used matches the same format as the one in this directory.
+
+note: any number of menu items/ingredients can be added, but the column titles must remain the same for the code to work. and the ingredients must be names the same thing in the first and second sheet
