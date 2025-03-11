@@ -3,12 +3,12 @@ import pandas as pd
 
 #class for a single menu item
 class MenuItem:
-    def __init__(self, name, ingredient_dict, timing_dict, sell_price):    #need to load in ingredients dictionary, timing for making, and sell price from excel!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    def __init__(self, name, ingredient_dict, timing_list, sell_price):    #need to load in ingredients dictionary, timing for making, and sell price from excel!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         self.name = name
         #dictionary of ingredients and weights
         self.ingredients = ingredient_dict
         #times for cooking, servers, and prep respectively
-        self.timing = timing_dict
+        self.timing = timing_list
         #selling price of the item
         self.sell_price = sell_price
 
@@ -70,18 +70,18 @@ class Menu:
             production_cost = 0
 
             #caclulate cost of ingredients for menu item
-            for name,weight in item.ingredients:
-                production_cost = production_cost + weight* self.ingredient_cost.get(name)
+            for name,weight in item.ingredients.items():
+                production_cost = production_cost + weight*self.ingredient_cost.get(name)
 
             #calculate cost of making the food for menu item!!!!!!!!!!!!!!!!1
-            for index in [0,1,2]:
-                production_cost = production_cost + self.wages[index].value()*item.timing[index]
+            for index in range(3):
+                production_cost = production_cost + list(item.timing.values())[index]/60 * list(self.wages.values())[index]
 
             #print statistics for the menu item
-            print("=====" + item + "=====\n")
-            print("Cost: " + production_cost + " $CAD\n")
-            print("sell price: " + item.sell_price + " $CAD\n")
-            print("profit: " + item.sell_price-production_cost + " $CAD\n")
+            print("=====" + item.name + "=====\n")
+            print("Cost: " + str(production_cost) + " $CAD\n")
+            print("sell price: " + str(item.sell_price) + " $CAD\n")
+            print("profit: " + str(item.sell_price-production_cost) + " $CAD\n")
         
 
 def analyze(file_name):
@@ -89,6 +89,8 @@ def analyze(file_name):
     #create menu in python
     resturant_menu = Menu(file_name)
 
+    #code for testing that the menu and its items have been calculated correctly
+    '''
     #see the contents of the menu and its items
     print(resturant_menu.ingredient_cost)
     print(resturant_menu.wages)
@@ -97,6 +99,10 @@ def analyze(file_name):
         print(item.ingredients)
         print(item.timing)
         print(item.sell_price)
+    '''
+
+    #calculate profit for each item
+    resturant_menu.calculate_profit()
 
 
     
