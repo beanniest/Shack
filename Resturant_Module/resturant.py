@@ -5,7 +5,7 @@ import numpy as np
 
 #class for a single menu item
 class MenuItem:
-    def __init__(self, name, ingredient_dict, timing_list, sell_price):    #need to load in ingredients dictionary, timing for making, and sell price from excel!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    def __init__(self, name, ingredient_dict, timing_list, sell_price):    #need to load in ingredients dictionary, timing for making, and sell price from excel
         self.name = name
         #dictionary of ingredients and weights
         self.ingredients = ingredient_dict
@@ -15,7 +15,7 @@ class MenuItem:
         self.sell_price = sell_price
 
 class Menu:
-    def __init__(self, excel_name):   #need to load in wages and ingredient cost from excel using pandas!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    def __init__(self, excel_name):   #need to load in wages and ingredient cost from excel using pandas
         #create a list of menu items and add all items in the excel
         self.menu_items = []
         self.add_items(excel_name)
@@ -89,7 +89,7 @@ class Menu:
             for name,weight in item.ingredients.items():
                 production_cost = production_cost + weight*self.ingredient_cost.get(name)
 
-            #calculate cost of making the food for menu item!!!!!!!!!!!!!!!!1
+            #calculate cost of making the food for menu item
             for index in range(3):
                 production_cost = production_cost + list(item.timing.values())[index]/60 * list(self.wages.values())[index]
 
